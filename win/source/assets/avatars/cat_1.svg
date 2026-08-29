@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Robot Cat 1 - Classic with antenna -->
+  <defs>
+    <linearGradient id="body1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2C5AA0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Antenna -->
+  <line x1="100" y1="30" x2="100" y2="50" stroke="#666" stroke-width="3"/>
+  <circle cx="100" cy="25" r="8" fill="#FF6B6B"/>
+  
+  <!-- Head -->
+  <rect x="50" y="50" width="100" height="80" rx="20" fill="url(#body1)"/>
+  
+  <!-- Eyes -->
+  <circle cx="75" cy="85" r="12" fill="white"/>
+  <circle cx="125" cy="85" r="12" fill="white"/>
+  <circle cx="75" cy="85" r="6" fill="#333"/>
+  <circle cx="125" cy="85" r="6" fill="#333"/>
+  
+  <!-- Ears -->
+  <polygon points="50,60 35,35 65,50" fill="#4A90E2"/>
+  <polygon points="150,60 165,35 135,50" fill="#4A90E2"/>
+  
+  <!-- Mouth -->
+  <path d="M 85 105 Q 100 115 115 105" stroke="white" stroke-width="3" fill="none"/>
+  
+  <!-- Body -->
+  <rect x="60" y="130" width="80" height="50" rx="15" fill="url(#body1)"/>
+  
+  <!-- Arms -->
+  <rect x="35" y="135" width="20" height="40" rx="10" fill="#4A90E2"/>
+  <rect x="145" y="135" width="20" height="40" rx="10" fill="#4A90E2"/>
+  
+  <!-- Legs -->
+  <rect x="75" y="175" width="15" height="15" rx="5" fill="#4A90E2"/>
+  <rect x="110" y="175" width="15" height="15" rx="5" fill="#4A90E2"/>
+</svg>

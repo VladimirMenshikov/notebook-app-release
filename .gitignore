@@ -1,0 +1,13 @@
+# Промежуточные артефакты сборки Flutter из win/source/
+win/source/build/
+win/source/.dart_tool/
+win/source/.flutter-plugins
+win/source/.flutter-plugins-dependencies
+win/source/windows/flutter/ephemeral/
+
+# Распакованный результат сборки build.bat (архив .zip коммитим, папку — нет)
+win/NotebookApp-*-windows-x64/
+
+# Системное
+.DS_Store
+Thumbs.db

@@ -1,0 +1,9 @@
+# Батник должен иметь CRLF-переводы строк на Windows
+*.bat text eol=crlf
+
+# Бинарные релизы — не трогать переводы строк, не считать текстом
+*.apk  binary
+*.deb  binary
+*.exe  binary
+*.zip  binary
+*.ico  binary

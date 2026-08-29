@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Robot Cat 6 - Astronaut helmet -->
+  <defs>
+    <linearGradient id="body6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8E8E8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#C0C0C0;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="helmet" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#4682B4;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Head -->
+  <rect x="50" y="50" width="100" height="80" rx="20" fill="url(#body6)"/>
+  
+  <!-- Helmet -->
+  <circle cx="100" cy="90" r="55" fill="url(#helmet)" stroke="#666" stroke-width="3"/>
+  
+  <!-- Eyes (inside helmet) -->
+  <circle cx="80" cy="85" r="10" fill="white"/>
+  <circle cx="120" cy="85" r="10" fill="white"/>
+  <circle cx="80" cy="85" r="5" fill="#333"/>
+  <circle cx="120" cy="85" r="5" fill="#333"/>
+  
+  <!-- Ears (under helmet) -->
+  <polygon points="50,60 35,35 60,50" fill="#E8E8E8"/>
+  <polygon points="150,60 165,35 140,50" fill="#E8E8E8"/>
+  
+  <!-- Smile -->
+  <path d="M 85 108 Q 100 118 115 108" stroke="#666" stroke-width="3" fill="none"/>
+  
+  <!-- Body -->
+  <rect x="60" y="130" width="80" height="50" rx="15" fill="url(#body6)"/>
+  
+  <!-- Backpack -->
+  <rect x="45" y="135" width="15" height="40" rx="5" fill="#999"/>
+  <rect x="140" y="135" width="15" height="40" rx="5" fill="#999"/>
+  
+  <!-- Arms -->
+  <rect x="35" y="135" width="20" height="40" rx="10" fill="#E8E8E8"/>
+  <rect x="145" y="135" width="20" height="40" rx="10" fill="#E8E8E8"/>
+  
+  <!-- Legs -->
+  <rect x="75" y="175" width="15" height="15" rx="5" fill="#E8E8E8"/>
+  <rect x="110" y="175" width="15" height="15" rx="5" fill="#E8E8E8"/>
+</svg>
