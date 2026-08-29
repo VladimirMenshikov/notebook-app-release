@@ -41,7 +41,14 @@ Name: "startmenuicon"; Description: "Создать ярлык в меню «П�
 
 [Files]
 ; --- Исходные файлы из папки приложения ---
-Source: "..\..\NotebookApp-{#MyAppVersion}-windows-x64\*"; DestDir: "{app}"; Flags: recursesubdirs
+; DLL и исполняемый файл — в корень
+Source: "..\..\NotebookApp-{#MyAppVersion}-windows-x64\notebook_app.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\NotebookApp-{#MyAppVersion}-windows-x64\flutter_windows.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\NotebookApp-{#MyAppVersion}-windows-x64\*_plugin.dll"; DestDir: "{app}"; Flags: ignoreversion
+; Ресурсы — в папку data
+Source: "..\..\NotebookApp-{#MyAppVersion}-windows-x64\app.so"; DestDir: "{app}\data"; Flags: ignoreversion
+Source: "..\..\NotebookApp-{#MyAppVersion}-windows-x64\icudtl.dat"; DestDir: "{app}\data"; Flags: ignoreversion
+Source: "..\..\NotebookApp-{#MyAppVersion}-windows-x64\flutter_assets\*"; DestDir: "{app}\data\flutter_assets"; Flags: recursesubdirs ignoreversion
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
