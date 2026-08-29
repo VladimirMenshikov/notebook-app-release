@@ -12,6 +12,8 @@ class Group {
   final int membersCount;
   final String createdById;
   final bool isOwner;
+  final bool isBanned;
+  final DateTime? bannedUntil;
 
   Group({
     required this.id,
@@ -20,6 +22,8 @@ class Group {
     this.membersCount = 1,
     this.createdById = '',
     this.isOwner = false,
+    this.isBanned = false,
+    this.bannedUntil,
   });
 
   bool get isAdmin => role == GroupRole.admin;
@@ -33,6 +37,10 @@ class Group {
           (json['members'] is List ? (json['members'] as List).length : 1),
       createdById: json['createdById'] as String? ?? '',
       isOwner: json['isOwner'] as bool? ?? false,
+      isBanned: json['isBanned'] as bool? ?? false,
+      bannedUntil: json['bannedUntil'] != null
+          ? DateTime.tryParse(json['bannedUntil'] as String)
+          : null,
     );
   }
 }
@@ -44,6 +52,10 @@ class GroupMember {
   final String? avatarName;
   final GroupRole role;
   final bool isOwner;
+  final bool isBanned;
+  final DateTime? bannedUntil;
+  final bool bannedForever;
+  final String? bannedByName;
 
   GroupMember({
     required this.userId,
@@ -52,6 +64,10 @@ class GroupMember {
     this.avatarName,
     this.role = GroupRole.member,
     this.isOwner = false,
+    this.isBanned = false,
+    this.bannedUntil,
+    this.bannedForever = false,
+    this.bannedByName,
   });
 
   factory GroupMember.fromJson(Map<String, dynamic> json) {
@@ -62,6 +78,12 @@ class GroupMember {
       avatarName: json['avatarName'] as String?,
       role: groupRoleFromString(json['role'] as String?),
       isOwner: json['isOwner'] as bool? ?? false,
+      isBanned: json['isBanned'] as bool? ?? false,
+      bannedUntil: json['bannedUntil'] != null
+          ? DateTime.tryParse(json['bannedUntil'] as String)
+          : null,
+      bannedForever: json['bannedForever'] as bool? ?? false,
+      bannedByName: json['bannedByName'] as String?,
     );
   }
 }

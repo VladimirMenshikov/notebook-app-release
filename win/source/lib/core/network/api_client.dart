@@ -383,6 +383,29 @@ class ApiClient {
     await _dio.delete('/groups/$groupId/members/$userId');
   }
 
+  /// Забанить участника. [until] == null — бессрочно.
+  Future<Map<String, dynamic>> banGroupMember(
+    String groupId,
+    String userId, {
+    DateTime? until,
+  }) async {
+    final response = await _dio.post(
+      '/groups/$groupId/members/$userId/ban',
+      data: {'until': until?.toIso8601String()},
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
+  Future<Map<String, dynamic>> unbanGroupMember(
+    String groupId,
+    String userId,
+  ) async {
+    final response = await _dio.post(
+      '/groups/$groupId/members/$userId/unban',
+    );
+    return response.data as Map<String, dynamic>;
+  }
+
   Future<void> leaveGroup(String groupId) async {
     await _dio.post('/groups/$groupId/leave');
   }

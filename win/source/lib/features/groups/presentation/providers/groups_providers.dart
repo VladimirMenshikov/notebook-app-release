@@ -77,7 +77,8 @@ class GroupsNotifier extends StateNotifier<List<Group>> {
         break;
       }
     }
-    if (match == null) {
+    if (match == null || match.isBanned) {
+      // Группа пропала (вышли/удалили) или нас в ней забанили — назад в «Личное».
       notifier.select(null);
     } else {
       notifier.restore(match);

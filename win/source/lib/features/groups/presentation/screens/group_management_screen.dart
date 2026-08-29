@@ -140,6 +140,75 @@ class _GroupManagementScreenState extends ConsumerState<GroupManagementScreen> {
     }
   }
 
+  Future<void> _banMember(GroupMember member) async {
+    final choice = await showDialog<String>(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: Text('Забанить ${member.name ?? member.email}'),
+        children: [
+          for (final d in const [
+            ('1 день', '1'),
+            ('7 дней', '7'),
+            ('30 дней', '30'),
+          ])
+            SimpleDialogOption(
+              onPressed: () => Navigator.pop(ctx, d.$2),
+              child: Text(d.$1),
+            ),
+          SimpleDialogOption(
+            onPressed: () => Navigator.pop(ctx, 'date'),
+            child: const Text('Выбрать дату…'),
+          ),
+          SimpleDialogOption(
+            onPressed: () => Navigator.pop(ctx, 'forever'),
+            child: const Text('Бессрочно'),
+          ),
+        ],
+      ),
+    );
+    if (!mounted || choice == null) return; // диалог закрыт — ничего не делаем
+
+    DateTime? until;
+    if (choice == 'forever') {
+      until = null;
+    } else if (choice == 'date') {
+      final picked = await showDatePicker(
+        context: context,
+        firstDate: DateTime.now().add(const Duration(days: 1)),
+        lastDate: DateTime.now().add(const Duration(days: 3650)),
+        initialDate: DateTime.now().add(const Duration(days: 7)),
+      );
+      if (picked == null) return;
+      until = picked;
+    } else {
+      until = DateTime.now().add(Duration(days: int.parse(choice)));
+    }
+
+    try {
+      final json = await ref
+          .read(apiClientProvider)
+          .banGroupMember(widget.groupId, member.userId, until: until);
+      if (!mounted) return;
+      setState(() => _detail = GroupDetail.fromJson(json));
+      await _syncGroups();
+    } catch (e) {
+      _snack(friendlyErrorMessage(e));
+    }
+  }
+
+  Future<void> _unbanMember(GroupMember member) async {
+    try {
+      final json = await ref
+          .read(apiClientProvider)
+          .unbanGroupMember(widget.groupId, member.userId);
+      if (!mounted) return;
+      setState(() => _detail = GroupDetail.fromJson(json));
+      await _syncGroups();
+    } catch (e) {
+      _snack(friendlyErrorMessage(e));
+    }
+  }
+
   Future<void> _leave() async {
     final confirmed = await _confirm('Выйти из группы «${_detail!.name}»?');
     if (!confirmed) return;
@@ -273,18 +342,51 @@ class _GroupManagementScreenState extends ConsumerState<GroupManagementScreen> {
   }
 
   Widget _memberTile(GroupMember m) {
+    final roleSuffix = m.isOwner
+        ? ' · создатель'
+        : m.role == GroupRole.admin
+            ? ' · админ'
+            : '';
+    final banLine = m.isBanned
+        ? m.bannedForever
+            ? '\nЗаблокирован бессрочно'
+            : '\nЗаблокирован до ${_d(m.bannedUntil)}'
+        : '';
     return ListTile(
-      leading: CircleAvatar(child: Text((m.name ?? m.email).characters.first.toUpperCase())),
+      isThreeLine: m.isBanned,
+      leading: CircleAvatar(
+        child: Text((m.name ?? m.email).characters.first.toUpperCase()),
+      ),
       title: Text(m.name ?? m.email),
       subtitle: Text(
-          '${m.email}${m.isOwner ? ' · создатель' : m.role == GroupRole.admin ? ' · админ' : ''}'),
+        '${m.email}$roleSuffix$banLine',
+        style: m.isBanned
+            ? TextStyle(color: Theme.of(context).colorScheme.error)
+            : null,
+      ),
       trailing: (_detail!.isAdmin && !m.isOwner)
-          ? IconButton(
-              icon: const Icon(Icons.remove_circle_outline),
-              onPressed: () => _removeMember(m),
+          ? PopupMenuButton<String>(
+              onSelected: (v) {
+                if (v == 'ban') _banMember(m);
+                if (v == 'unban') _unbanMember(m);
+                if (v == 'remove') _removeMember(m);
+              },
+              itemBuilder: (ctx) => [
+                if (m.isBanned)
+                  const PopupMenuItem(value: 'unban', child: Text('Разбанить'))
+                else
+                  const PopupMenuItem(value: 'ban', child: Text('Забанить')),
+                const PopupMenuItem(
+                    value: 'remove', child: Text('Исключить из группы')),
+              ],
             )
           : null,
     );
+  }
+
+  String _d(DateTime? dt) {
+    if (dt == null) return '';
+    return '${dt.day.toString().padLeft(2, '0')}.${dt.month.toString().padLeft(2, '0')}.${dt.year}';
   }
 
   Widget _invitationTile(GroupInvitationInfo inv) {

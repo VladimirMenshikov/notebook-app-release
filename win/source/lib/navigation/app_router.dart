@@ -7,6 +7,7 @@ import '../features/auth/presentation/screens/profile_setup_screen.dart';
 import '../features/home/presentation/screens/main_screen.dart';
 import '../features/home/presentation/screens/download_screen.dart';
 import '../features/notes/presentation/screens/note_editor_screen.dart';
+import '../features/groups/presentation/screens/groups_list_screen.dart';
 import '../features/groups/presentation/screens/group_management_screen.dart';
 import '../features/groups/presentation/screens/my_invitations_screen.dart';
 import '../features/profile/presentation/screens/profile_screen.dart';
@@ -92,6 +93,11 @@ class AppRouter {
           ),
 
           // Groups
+          GoRoute(
+            path: '/groups',
+            name: 'groups',
+            builder: (context, state) => const GroupsListScreen(),
+          ),
           GoRoute(
             path: '/groups/:id',
             name: 'group-management',

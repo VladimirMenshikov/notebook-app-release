@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:notebook_app/core/network/api_client.dart';
 import 'package:notebook_app/core/network/api_error.dart';
 import 'package:notebook_app/features/home/presentation/screens/download_screen.dart';
+import 'package:notebook_app/features/groups/presentation/providers/groups_providers.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -191,6 +192,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             ),
             const SizedBox(height: 24),
             
+            // My groups
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.groups_outlined),
+                title: const Text('Мои группы'),
+                subtitle: const Text('Создать группу, участники, приглашения'),
+                trailing: _groupsTrailing(),
+                onTap: () => context.push('/groups'),
+              ),
+            ),
+            const SizedBox(height: 12),
+
             // Install app
             Card(
               child: ListTile(
@@ -218,6 +231,22 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Widget _groupsTrailing() {
+    final invCount =
+        ref.watch(myInvitationsProvider).asData?.value.length ?? 0;
+    if (invCount > 0) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Badge(label: Text('$invCount')),
+          const SizedBox(width: 8),
+          const Icon(Icons.chevron_right),
+        ],
+      );
+    }
+    return const Icon(Icons.chevron_right);
   }
 
   Widget _buildStatRow(String label, int value) {
