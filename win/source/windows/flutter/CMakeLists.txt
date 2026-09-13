@@ -89,6 +89,11 @@ add_dependencies(flutter_wrapper_app flutter_assemble)
 # flutter tool.
 set(PHONY_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/_phony_")
 set_source_files_properties("${PHONY_OUTPUT}" PROPERTIES SYMBOLIC TRUE)
+# Workaround: бандл CMake из Visual Studio 17.14 — libuv 1.49+ отказывается
+# напрямую запускать .bat-файлы через "cmake -E env" с ошибкой
+# "no such file or directory", поэтому tool_backend.bat запускается через
+# cmd.exe. Комментарий намеренно без скобок: миграция flutter
+# CmakeCustomCommandMigration ищет первую ")" внутри add_custom_command.
 add_custom_command(
   OUTPUT ${FLUTTER_LIBRARY} ${FLUTTER_LIBRARY_HEADERS}
     ${CPP_WRAPPER_SOURCES_CORE} ${CPP_WRAPPER_SOURCES_PLUGIN}
@@ -96,7 +101,7 @@ add_custom_command(
     ${PHONY_OUTPUT}
   COMMAND ${CMAKE_COMMAND} -E env
     ${FLUTTER_TOOL_ENVIRONMENT}
-    "${FLUTTER_ROOT}/packages/flutter_tools/bin/tool_backend.bat"
+    cmd /c "${FLUTTER_ROOT}/packages/flutter_tools/bin/tool_backend.bat"
       ${FLUTTER_TARGET_PLATFORM} $<CONFIG>
   VERBATIM
 )
